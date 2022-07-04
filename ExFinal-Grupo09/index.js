@@ -48,10 +48,10 @@ module.exports = async function (context, req) {
         console.log(ShipCountryStr)
 
 
-        if(CustomerIDStr != undefined || EmployeeIDStr != undefined || OrderDateStr != undefined || RequiredDateStr != undefined || ShippedDateStr != undefined
-            || ShipViaStr != undefined || FreightStr != undefined || ShipNameStr != undefined || ShipAddressStr != undefined || ShipCityStr != undefined ||
-            ShipRegionStr != undefined || ShipPostalCodeStr != undefined || ShipCountryStr != undefined){
- 
+        if(CustomerIDStr != undefined && EmployeeIDStr != undefined && OrderDateStr != undefined && RequiredDateStr != undefined && ShippedDateStr != undefined
+            && ShipViaStr != undefined && FreightStr != undefined && ShipNameStr != undefined && ShipAddressStr != undefined && ShipCityStr != undefined &&
+            ShipRegionStr != undefined && ShipPostalCodeStr != undefined && ShipCountryStr != undefined){
+
             let insertValues = {
                 CustomerID: CustomerIDStr,
                 EmployeeID: EmployeeIDStr,
@@ -70,17 +70,12 @@ module.exports = async function (context, req) {
  
             await promisePool.query("INSERT INTO orders SET ? ", insertValues);
 
-            //console.log(moment(OrderDateStr).format('YYYY-MM-DD HH:mm:ss'));
-            //OrderDateStr = moment(OrderDateStr).format('YYYY-MM-DD HH:mm:ss');
-            //RequiredDateStr = moment(RequiredDateStr).format('YYYY-MM-DD HH:mm:ss');
-            //ShippedDateStr = moment(ShippedDateStr).format('YYYY-MM-DD HH:mm:ss');
-
-            [row2,fields2] = await promisePool.query("SELECT orders.OrderID FROM orders WHERE CustomerID= '"+CustomerIDStr+"' AND EmployeeID= '"+EmployeeIDStr+"' AND OrderDate= '"+OrderDateStr+"' AND RequiredDate= '"+RequiredDateStr+"' AND ShippedDate= '"+ShippedDateStr+"' AND ShipVia= '"+ShipViaStr+"' AND Freight= '"+FreightStr+"' AND ShipName= '"+ShipNameStr+"' AND ShipAddress=  '"+ShipAddressStr+"' AND ShipCity = '"+ShipCityStr+"' AND ShipRegion = '"+ShipRegionStr+"' AND ShipPostalCode= '"+ShipPostalCodeStr+"' AND ShipCountry= '"+ShipCountryStr+"'");
+            [row,fields] = await promisePool.query("SELECT OrderID FROM orders WHERE CustomerID= '"+CustomerIDStr+"' AND EmployeeID= '"+EmployeeIDStr+"' AND OrderDate= '"+OrderDateStr+"' AND RequiredDate= '"+RequiredDateStr+"' AND ShippedDate= '"+ShippedDateStr+"' AND ShipVia= '"+ShipViaStr+"' AND Freight= '"+FreightStr+"' AND ShipName= '"+ShipNameStr+"' AND ShipAddress=  '"+ShipAddressStr+"' AND ShipCity = '"+ShipCityStr+"' AND ShipRegion = '"+ShipRegionStr+"' AND ShipPostalCode= '"+ShipPostalCodeStr+"' AND ShipCountry= '"+ShipCountryStr+"'");
             
             context.res = {
                 body:{
                     result: 'success',
-                    data: row2
+                    data: row
                 },
                 headers:{'Content-Type':'application/json'}
             }
