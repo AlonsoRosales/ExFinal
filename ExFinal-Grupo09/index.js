@@ -20,6 +20,69 @@ const promisePool = pool.promise();
  
 module.exports = async function (context, req) {
     if(req.body != undefined){
+        let OrderIDStr = req.body.OrderID;
+        console.log(OrderIDStr)
+        if(OrderIDStr != undefined){
+            let CustomerIDStr = req.body.CustomerID;
+            let EmployeeIDStr =  req.body.EmployeeID;
+            let OrderDateStr = req.body.OrderDate;
+            let RequiredDateStr = req.body.RequiredDate;
+            let ShippedDateStr = req.body.ShippedDate;
+            let ShipViaStr = req.body.ShipVia;
+            let FreightStr = req.body.Freight;
+            let ShipNameStr = req.body.ShipName;
+            let ShipAddressStr = req.body.ShipAddress;
+            let ShipCityStr = req.body.ShipCity;
+            let ShipRegionStr = req.body.ShipRegion;
+            let ShipPostalCodeStr = req.body.ShipPostalCode;
+            let ShipCountryStr = req.body.ShipCountry;
+            
+            if(CustomerIDStr != undefined && EmployeeIDStr != undefined && OrderDateStr != undefined && RequiredDateStr != undefined && ShippedDateStr != undefined
+                && ShipViaStr != undefined && FreightStr != undefined && ShipNameStr != undefined && ShipAddressStr != undefined && ShipCityStr != undefined &&
+                ShipRegionStr != undefined && ShipPostalCodeStr != undefined && ShipCountryStr != undefined){
+    
+                let insertValues = {
+                    CustomerID: CustomerIDStr,
+                    EmployeeID: EmployeeIDStr,
+                    OrderDate: OrderDateStr,
+                    RequiredDate: RequiredDateStr,
+                    ShippedDate: ShippedDateStr,
+                    ShipVia: ShipViaStr,
+                    Freight: FreightStr,
+                    ShipName: ShipNameStr,
+                    ShipAddress: ShipAddressStr,
+                    ShipCity: ShipCityStr,
+                    ShipRegion: ShipRegionStr,
+                    ShipPostalCode: ShipPostalCodeStr,
+                    ShipCountry: ShipCountryStr
+                }        
+     
+                await promisePool.query("UPDATE orders SET ? ", insertValues, "WHERE OrderID = ",OrderIDStr);
+    
+                //[row,fields] = await promisePool.query("SELECT OrderID FROM orders WHERE CustomerID= '"+CustomerIDStr+"' AND EmployeeID= '"+EmployeeIDStr+"' AND OrderDate= '"+OrderDateStr+"' AND RequiredDate= '"+RequiredDateStr+"' AND ShippedDate= '"+ShippedDateStr+"' AND ShipVia= '"+ShipViaStr+"' AND Freight= '"+FreightStr+"' AND ShipName= '"+ShipNameStr+"' AND ShipAddress=  '"+ShipAddressStr+"' AND ShipCity = '"+ShipCityStr+"' AND ShipRegion = '"+ShipRegionStr+"' AND ShipPostalCode= '"+ShipPostalCodeStr+"' AND ShipCountry= '"+ShipCountryStr+"'");
+                
+                context.res = {
+                    body:{
+                        result: 'success',
+                        message: 'Actualizacion correcta'
+                    },
+                    headers:{'Content-Type':'application/json'}
+                }
+           
+            }else{
+                context.res = {
+                    body:{
+                        result: 'error',
+                        message: "parámetros incorrectos"
+                    },
+                    headers:{'Content-Type':'application/json'}
+                }
+            }
+
+
+        }else{
+
+
         let CustomerIDStr = req.body.CustomerID;
         let EmployeeIDStr =  req.body.EmployeeID;
         let OrderDateStr = req.body.OrderDate;
@@ -89,9 +152,7 @@ module.exports = async function (context, req) {
                 headers:{'Content-Type':'application/json'}
             }
         }
- 
- 
-    }else{
+    }}else{
  
     let orderIDStr = req.query.OrderID;
     console.log(orderIDStr);
