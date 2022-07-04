@@ -1,17 +1,17 @@
 const mysql = require('mysql2');
-var fs = require('fs');
-const path = require('path');
-
-
+const fs = require("fs");
+const path = require("path");
+const certificadoUri = path.resolve(__dirname,"DigiCertGlobalRootCA.crt.pem");
+const certificado = [fs.readFileSync(certificadoUri,"utf8")];
 const pool = mysql.createPool({
-    host:
-    user:
-    password:
-    database: northwind,
+    host: "examentgtics20221.mysql.database.azure.com",
+    user: "Grupo9",
+    password: "09Gt1cs!",
+    database: "northwind2",
     port: 3306,
     ssl:{
-        rejectUnauthorized:
-        ca:
+        rejectUnauthorized: true,
+        ca: certificado
     }
 });
 
