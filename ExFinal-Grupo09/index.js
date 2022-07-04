@@ -26,13 +26,37 @@ module.exports = async function (context, req) {
         [row,fields] = await promisePool.query("SELECT customers.CompanyName,employees.FirstName,employees.LastName,orders.OrderDate,orders.RequiredDate,orders.ShippedDate,shippers.CompanyName,orders.Freight,orders.ShipName,orders.ShipAddress,orders.ShipCity,orders.ShipRegion,orders.ShipPostalCode,orders.ShipCountry FROM ordersINNER JOIN employees ON (orders.EmployeeID = employees.EmployeeID)INNER JOIN customers ON ( orders.CustomerID = customers.CustomerID)INNER JOIN shippers ON ( shippers.ShipperID = orders.ShipVia)");
     }else{
         if (isNaN(orderIDStr)) {
-            throw new Error('Unable to parse int');
+            context.res = {
+                body:{
+                    result: 'failure',
+                    message: "El OrderID tiene que ser un dato numerico"
+                },
+                headers:{'Content-Type':'application/json'}
+            }
+
+        }else{
+            orderID = orderIDStr;
+            [row1,fields1] = await promise.query("SELECT customers.CompanyName,employees.FirstName,employees.LastName,orders.OrderDate,orders.RequiredDate,orders.ShippedDate,shippers.CompanyName,orders.Freight,orders.ShipName,orders.ShipAddress,orders.ShipCity,orders.ShipRegion,orders.ShipPostalCode,orders.ShipCountry FROM ordersINNER JOIN employees ON (orders.EmployeeID = employees.EmployeeID)INNER JOIN customers ON ( orders.CustomerID = customers.CustomerID)INNER JOIN shippers ON ( shippers.ShipperID = orders.ShipVia) WHERE OrderID = "+orderID);
+            if(length(row1) == 0){
+                context.res = {
+                    body:{
+                        result: 'failure',
+                        message: "No existe la Orden"
+                    },
+                    headers:{'Content-Type':'application/json'}
+                }
+            }
+            else{
+                context.res = {
+                    body:{
+                        result: 'success',
+                        data:row1
+                    },
+                    headers:{'Content-Type':'application/json'}
+                }
+            }   
         }
-        
-        orderID = orderIDStr;
-
-        
-
+         
     }
 
 
