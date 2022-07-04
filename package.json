@@ -1,19 +1,8 @@
 {
-<<<<<<< HEAD
   "dependencies": {
     "fs": "^0.0.1-security",
     "install": "^0.13.0",
-=======
-  "name": "ex-final",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "start": "func start",
-    "test": "echo \"No tests yet...\""
-  },
-  "dependencies": {
-    "fs": "^0.0.1-security",
->>>>>>> 0b85e0664b82455e4daa0b1f37de005a807cdfe8
+    "moment": "^2.29.3",
     "mysql2": "^2.3.3"
   }
 }

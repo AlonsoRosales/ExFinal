@@ -6,9 +6,11 @@
       "direction": "in",
       "name": "req",
       "methods": [
-        "get"
+        "get",
+        "post",
+        "put"
       ],
-      "route": "api/orders"
+      "route": "orders"
     },
     {
       "type": "http",
